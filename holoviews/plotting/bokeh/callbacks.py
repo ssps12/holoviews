@@ -409,34 +409,6 @@ class PointerXYCallback(Callback):
 
     on_events = ['mousemove']
 
-    # Clip x and y values to available axis range
-    code = """
-    if (x_range.type.endsWith('Range1d')) {
-      var xstart = x_range.start;
-      var xend = x_range.end;
-      if (xstart > xend) {
-        [xstart, xend] = [xend, xstart]
-      }
-      if (cb_obj.x < xstart) {
-        data['x'] = xstart;
-      } else if (cb_obj.x > xend) {
-        data['x'] = xend;
-      }
-    }
-    if (y_range.type.endsWith('Range1d')) {
-      var ystart = y_range.start;
-      var yend = y_range.end;
-      if (ystart > yend) {
-        [ystart, yend] = [yend, ystart]
-      }
-      if (cb_obj.y < ystart) {
-        data['y'] = ystart;
-      } else if (cb_obj.y > yend) {
-        data['y'] = yend;
-      }
-    }
-    """
-
     def _process_out_of_bounds(self, value, start, end):
         "Clips out of bounds values"
         if isinstance(value, np.datetime64):
@@ -471,10 +443,9 @@ class PointerXYCallback(Callback):
         if 'y' in msg and isinstance(yaxis, DatetimeAxis):
             msg['y'] = convert_timestamp(msg['y'])
 
-        server_mode = self.plot.renderer.mode == 'server'
         if isinstance(x_range, FactorRange) and isinstance(msg.get('x'), (int, float)):
             msg['x'] = x_range.factors[int(msg['x'])]
-        elif 'x' in msg and isinstance(x_range, (Range1d, DataRange1d)) and server_mode:
+        elif 'x' in msg and isinstance(x_range, (Range1d, DataRange1d)):
             xstart, xend = x_range.start, x_range.end
             if xstart > xend:
                 xstart, xend = xend, xstart
@@ -486,7 +457,7 @@ class PointerXYCallback(Callback):
 
         if isinstance(y_range, FactorRange) and isinstance(msg.get('y'), (int, float)):
             msg['y'] = y_range.factors[int(msg['y'])]
-        elif 'y' in msg and isinstance(y_range, (Range1d, DataRange1d)) and server_mode:
+        elif 'y' in msg and isinstance(y_range, (Range1d, DataRange1d)):
             ystart, yend = y_range.start, y_range.end
             if ystart > yend:
                 ystart, yend = yend, ystart
@@ -505,21 +476,7 @@ class PointerXCallback(PointerXYCallback):
     """
 
     attributes = {'x': 'cb_obj.x'}
-    extra_models= ['x_range']
-    code = """
-    if (x_range.type.endsWith('Range1d')) {
-      var xstart = x_range.start;
-      var xend = x_range.end;
-      if (xstart > xend) {
-        [xstart, xend] = [xend, xstart]
-      }
-      if (cb_obj.x < xstart) {
-        data['x'] = xstart;
-      } else if (cb_obj.x > xend) {
-        data['x'] = xend;
-      }
-    }
-    """
+
 
 class PointerYCallback(PointerXYCallback):
     """
@@ -527,21 +484,7 @@ class PointerYCallback(PointerXYCallback):
     """
 
     attributes = {'y': 'cb_obj.y'}
-    extra_models= ['y_range']
-    code = """
-    if (y_range.type.endsWith('Range1d')) {
-      var ystart = y_range.start;
-      var yend = y_range.end;
-      if (ystart > yend) {
-        [ystart, yend] = [yend, ystart]
-      }
-      if (cb_obj.y < ystart) {
-        data['y'] = ystart;
-      } else if (cb_obj.y > yend) {
-        data['y'] = yend;
-      }
-    }
-    """
+
 
 class DrawCallback(PointerXYCallback):
     on_events = ['pan', 'panstart', 'panend']
@@ -567,30 +510,6 @@ class TapCallback(PointerXYCallback):
 
     Note: As of bokeh 0.12.5, there is no way to distinguish the
     individual tap events within a doubletap event.
-    """
-
-    # Skip if tap is outside axis range
-    code = """
-    if (x_range.type.endsWith('Range1d')) {
-      var xstart = x_range.start;
-      var xend = x_range.end;
-      if (xstart > xend) {
-        [xstart, xend] = [xend, xstart]
-      }
-      if ((cb_obj.x < xstart) || (cb_obj.x > xend)) {
-        return
-      }
-    }
-    if (y_range.type.endsWith('Range1d')) {
-      var ystart = y_range.start;
-      var yend = y_range.end;
-      if (ystart > yend) {
-        [ystart, yend] = [yend, ystart]
-      }
-      if ((cb_obj.y < ystart) || (cb_obj.y > yend)) {
-        return
-      }
-    }
     """
 
     on_events = ['tap', 'doubletap']
