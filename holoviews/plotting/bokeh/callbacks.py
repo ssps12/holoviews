@@ -11,8 +11,9 @@ from bokeh.models import (
     DataRange1d, PolyDrawTool, BoxEditTool, PolyEditTool,
     FreehandDrawTool, PointDrawTool
 )
-from panel.io.state import state
 from panel.callbacks import PeriodicCallback
+from panel.io.state import state
+from panel.io.model import hold
 from pyviz_comms import JS_CALLBACK
 from tornado import gen
 
@@ -278,7 +279,8 @@ class Callback(object):
             if self.plot.renderer.mode == 'server':
                 self._schedule_callback(self.process_on_change_coroutine)
             else:
-                self.process_on_change()
+                with hold(self.plot.document):
+                    self.process_on_change()
 
     def on_event(self, event):
         """
@@ -291,7 +293,8 @@ class Callback(object):
             if self.plot.renderer.mode == 'server':
                 self._schedule_callback(self.process_on_event_coroutine)
             else:
-                self.process_on_event()
+                with hold(self.plot.document):
+                    self.process_on_event()
 
     @gen.coroutine
     def process_on_event_coroutine(self):
@@ -328,7 +331,7 @@ class Callback(object):
             self._active = False
             return
         elif self._batched and not all(b in [q[0] for q in self._queue] for b in self._batched):
-            self._schedule_callback(self.process_on_change)
+            self._active = False
             return # Skip until all batched events have arrived
         self._queue = []
 
@@ -353,6 +356,8 @@ class Callback(object):
 
         if self.plot.renderer.mode == 'server':
             self._schedule_callback(self.process_on_change)
+        else:
+            self._active = False
 
 
     def set_callback(self, handle):
