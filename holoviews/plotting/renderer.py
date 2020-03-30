@@ -33,7 +33,7 @@ from pyviz_comms import CommManager, JupyterCommManager
 from ..core import Layout, HoloMap, AdjointLayout, DynamicMap
 from ..core.io import Exporter
 from ..core.options import Store, StoreOptions, SkipRendering, Compositor
-from ..core.util import unbound_dimensions, LooseVersion
+from ..core.util import unbound_dimensions
 from ..streams import Stream
 from . import Plot
 from .util import displayable, collate, initialize_dynamic
