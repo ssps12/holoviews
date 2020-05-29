@@ -57,22 +57,35 @@ jobs:
   include:
     ########## Test Stage ##########
 
-    - &default
+- &default
+
       stage: test
       env: DESC="Python 3.6 tests" HV_REQUIREMENTS="unit_tests" PYTHON_VERSION=3.6
       before_install:
-        - pip install pyctdev && doit miniconda_install && pip uninstall -y doit pyctdev
+        - pip install flake8
+        - which flake8
+        - pip install pyctdev
+        - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
+        - chmod +x miniconda.sh
+        - ./miniconda.sh -b -p $HOME/miniconda
+        - chown -R 1000:1000 /home/travis/
         - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
         - conda config --set always_yes True
-        - conda install -c pyviz "pyctdev>=0.5" && doit ecosystem_setup
+        - doit ecosystem_setup
       install:
-        - doit env_create $CHANS_DEV --python=$PYTHON_VERSION
+        - conda create -n test-environment python=$PYTHON_VERSION
         - source activate test-environment
-        - travis_wait 30 doit develop_install $CHANS_DEV -o $HV_REQUIREMENTS
+        - sudo apt-get -y install libjpeg-dev zlib1g-dev
+        - conda install conda
+        - conda install -c conda-forge ca-certificates
+        - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit
+        - conda install "zlib==1.2.11" "libstdcxx-ng==7.3.0" "readline==8.0" "sqlite==3.30.1" "libffi==3.2.1" "wheel==0.33.6" "pip==19.3.1" "libgcc-ng==7.3.0" "certifi==2019.11.28" "tk==8.6.10" "xz==5.2.4" "openssl==1.1.1d" "python==3.6.7" "ncurses==6.1" "setuptools==44.0.0"
+        - pip install phantomjs
+        - travis_wait 20 doit develop_install $CHANS_DEV -o $HV_REQUIREMENTS
         - doit env_capture
       script:
-        - doit test_all_recommended
-      after_success: coveralls
+        -  doit test_all_recommended
+      after_success:  coveralls
       after_failure: sleep 10
 
     - <<: *default
