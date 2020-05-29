@@ -57,8 +57,7 @@ jobs:
   include:
     ########## Test Stage ##########
 
-- &default
-
+    - &default
       stage: test
       env: DESC="Python 3.6 tests" HV_REQUIREMENTS="unit_tests" PYTHON_VERSION=3.6
       before_install:
