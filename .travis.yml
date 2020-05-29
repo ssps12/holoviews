@@ -8,10 +8,7 @@ git:
 language: generic
 
 os:
-  - linux
-  
-arch:
-  - arm64  
+  - linux 
 
 dist: xenial
 
