@@ -84,7 +84,11 @@ jobs:
         - conda install pandas
         - conda install numpy
         - conda install holoviews
-        - conda install param>=1.7.0 pyct>=0.4.4 setuptools>=30.3.0 pyct-core coverage
+        - conda install pyct-core
+        - conda install coverage
+        - conda install param>=1.7.0
+        - conda install pyct>=0.4.4
+        - conda install setuptools>=30.3.0 
         - python setup.py develop
         - doit env_capture
       script:
