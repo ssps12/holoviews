@@ -84,7 +84,7 @@ jobs:
         - python setup.py develop
         - doit env_capture
       script:
-        -  doit test_all
+        -  pytest
       after_success:  coveralls
       after_failure: sleep 10
 
