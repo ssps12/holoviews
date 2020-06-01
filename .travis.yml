@@ -85,6 +85,7 @@ jobs:
         - doit env_capture
       script:
         -  tox -e py36 test_all_recommended
+        -  tox -e py37 test_all_recommended
       after_success:  coveralls
       after_failure: sleep 10
 
