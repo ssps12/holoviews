@@ -81,7 +81,6 @@ jobs:
         - conda install coveralls 
         - conda install libllvm9
         - conda install libopenblas
-        - conda install libllvm8
         - conda install matplotlib
         - conda install pyarrow
         - conda install selenium
