@@ -78,7 +78,6 @@ jobs:
         - conda install conda
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
-        - conda install -c conda-forge qt
         - conda install coveralls 
         - conda install libllvm9
         - conda install libopenblas
@@ -86,7 +85,7 @@ jobs:
         - conda install pyarrow
         - conda install selenium
         - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit
-        - pip install phantomjs tox pytest nose plotly pytest-cov pandoc
+        - pip install phantomjs tox pytest nose plotly pytest-cov pandoc qt
         - conda install scipy 
         - conda install conda-build
         - conda install flake8
