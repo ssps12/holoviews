@@ -79,7 +79,9 @@ jobs:
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
         - conda install mock
-        - conda install pyqt
+        - conda install cftime 
+        - conda install dbus
+        - conda install ffmpeg
         - conda install coveralls 
         - conda install libllvm9
         - conda install libopenblas
