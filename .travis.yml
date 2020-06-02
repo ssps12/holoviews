@@ -88,7 +88,7 @@ jobs:
         - conda install pyarrow
         - conda install selenium
         - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit
-        - pip install phantomjs tox pytest nose plotly pytest-cov pandoc
+        - pip install phantomjs tox pytest nose plotly pytest-cov pandoc nbsmoke
         - conda install scipy 
         - conda install conda-build
         - conda install flake8
