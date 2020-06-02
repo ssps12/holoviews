@@ -82,7 +82,7 @@ jobs:
         - pip install phantomjs tox pytest nose plotly
         - conda install scipy 
         - conda install conda-build
-        - conda install datashader
+        - conda install flake8
         - conda install pandas
         - conda install numpy
         - conda install holoviews
