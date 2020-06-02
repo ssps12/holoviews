@@ -91,7 +91,6 @@ jobs:
         - conda install coverage
         - conda install param
         - conda install pyct
-        - conda install setuptools
         - python setup.py develop
         - doit env_capture
       script:
