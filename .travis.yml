@@ -95,11 +95,12 @@ jobs:
         - conda install coverage
         - conda install param
         - conda install pyct
-        - python setup.py develop
+        - python setup.py install
         - doit env_capture
       script:
-        - nosetests   
-        - pytest examples
+        - flake8 holoviews
+        - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
+        - pytest --nbsmoke-run -k ".ipynb" examples/reference/elements
       after_success:  coveralls
       after_failure: sleep 10
       
