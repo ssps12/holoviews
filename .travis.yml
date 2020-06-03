@@ -67,13 +67,10 @@ jobs:
       install:
         - conda create -n test-environment python=$PYTHON_VERSION
         - source activate test-environment
-        - sudo apt-get -y install libjpeg-dev zlib1g-dev
-        - conda install conda
+        - conda install conda matplotlib==2.2.5
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
-        - conda install matplotlib==2.2.5
-        - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit
-        - pip install phantomjs tox pytest nose plotly pytest-cov pandoc nbsmoke
+        - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit pytest nose plotly pytest-cov pandoc nbsmoke
         - python setup.py install
         - doit env_capture
       script:
