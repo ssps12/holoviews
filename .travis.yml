@@ -99,7 +99,7 @@ jobs:
         - doit env_capture
       script:
         - nosetests   
-        - pytest
+        - pytest examples
       after_success:  coveralls
       after_failure: sleep 10
       
