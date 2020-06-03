@@ -69,7 +69,7 @@ jobs:
         - source activate test-environment
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
-        - conda install matplotlib==2.2.5 numpy && python setup.py install
+        - conda install "matplotlib==2.2.5" "pyctdev>=0.5" && python setup.py install
         - doit env_capture
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
