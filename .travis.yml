@@ -82,9 +82,9 @@ jobs:
         - python setup.py install
         - doit env_capture
       script:
+        - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
         - pytest --nbsmoke-run -k ".ipynb" examples/reference/elements
         - flake8 holoviews
-        - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
       after_success:  coveralls
       after_failure: sleep 10
       
