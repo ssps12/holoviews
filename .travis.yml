@@ -67,6 +67,7 @@ jobs:
       install:
         - conda create -n test-environment python=$PYTHON_VERSION
         - source activate test-environment
+        - conda install -c numba -c pyviz datashader
         - conda install matplotlib==2.2.5 && python setup.py install
         - doit env_capture
       script:
