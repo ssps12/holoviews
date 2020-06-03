@@ -59,7 +59,7 @@ jobs:
       env: DESC="Python 3.6 tests" HV_REQUIREMENTS="unit_tests" PYTHON_VERSION=3.6
       arch: arm64
       before_install:
-        - pip install pyctdev pytest nose flake8 pytest-cov pandoc nbsmoke
+        - pip install pyctdev flake8
         - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
         - chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
         - chown -R 1000:1000 /home/travis/ && export PATH="$HOME/miniconda/bin:$PATH" && hash -r
@@ -67,17 +67,20 @@ jobs:
       install:
         - conda create -n test-environment python=$PYTHON_VERSION
         - source activate test-environment
+        - sudo apt-get -y install libjpeg-dev zlib1g-dev
         - conda install conda
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
         - conda install matplotlib==2.2.5
-        - pip install "pyctdev>=0.5" && python setup.py install
+        - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit
+        - pip install phantomjs tox pytest nose plotly pytest-cov pandoc nbsmoke
+        - python setup.py install
         - doit env_capture
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
         - pytest --nbsmoke-run -k ".ipynb" examples/reference/elements
         - flake8 holoviews
-      after_success: coveralls
+      after_success:  coveralls
       after_failure: sleep 10
       
     - &default
