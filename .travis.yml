@@ -59,7 +59,7 @@ jobs:
       env: DESC="Python 3.6 tests" HV_REQUIREMENTS="unit_tests" PYTHON_VERSION=3.6
       arch: arm64
       before_install:
-        - pip install pyctdev
+        - pip install pyctdev pytest nose flake8
         - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
         - chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
         - chown -R 1000:1000 /home/travis/ && export PATH="$HOME/miniconda/bin:$PATH" && hash -r
@@ -67,9 +67,7 @@ jobs:
       install:
         - conda create -n test-environment python=$PYTHON_VERSION
         - source activate test-environment
-        - conda install matplotlib==2.2.5
-        - conda install -c numba -c pyviz datashader
-        - python setup.py install
+        - conda install matplotlib==2.2.5 && python setup.py install
         - doit env_capture
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
