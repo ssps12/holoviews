@@ -71,13 +71,10 @@ jobs:
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
         - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit pytest nose plotly pytest-cov pandoc nbsmoke
-        - python setup.py install
-        - doit env_capture
+        - python setup.py install && doit env_capture
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
-        - pytest --nbsmoke-run -k ".ipynb" examples/reference/elements
-        - flake8 holoviews
-      after_success:  coveralls
+      after_success: coveralls
       after_failure: sleep 10
       
     - &default
