@@ -60,6 +60,7 @@ jobs:
       arch: arm64
       before_install:
         - pip install pyctdev
+        - uname -m
         - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
         - chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
         - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
@@ -68,10 +69,11 @@ jobs:
       install:
         - conda create -n test-environment python=$PYTHON_VERSION
         - source activate test-environment
-        - conda install conda matplotlib==2.2.5 numpy
+        - conda install conda matplotlib==2.2.5
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
         - python setup.py install && doit env_capture
+        - pip install numpy
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
       after_success: coveralls
