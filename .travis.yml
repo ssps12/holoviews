@@ -59,7 +59,6 @@ jobs:
       env: DESC="Python 3.6 tests" PYTHON_VERSION=3.6
       arch: arm64
       before_install:
-        - pip install pyctdev>=0.5
         - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
         - chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
         - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
@@ -70,7 +69,7 @@ jobs:
         - conda install conda matplotlib==2.2.5
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
-        - pip install "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit pytest nose plotly pytest-cov pandoc nbsmoke coveralls
+        - pip install "pyctdev>=0.5" "certifi==2019.11.28" "pip==19.3.1" "setuptools==42.0.2" "wheel==0.33.6" doit pytest nose plotly pytest-cov pandoc nbsmoke coveralls
         - python setup.py install && doit env_capture
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
