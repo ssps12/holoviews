@@ -24,7 +24,6 @@ env:
     - CHANS="-c pyviz"
     - MPLBACKEND="Agg"
     - PYTHON_VERSION=3.7
-    - uname -m
 
 stages:
   - test
@@ -60,7 +59,6 @@ jobs:
       env: DESC="Python 3.6 tests" PYTHON_VERSION=3.6
       arch: arm64
       before_install:
-        - pip install pyctdev
         - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
         - chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
         - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
@@ -73,7 +71,6 @@ jobs:
         - conda install -c conda-forge ca-certificates
         - conda install -c numba -c pyviz datashader
         - python setup.py install && doit env_capture
-        - pip install numpy
       script:
         - nosetests holoviews.tests --with-doctest --with-coverage --cover-package=holoviews
       after_success: coveralls
